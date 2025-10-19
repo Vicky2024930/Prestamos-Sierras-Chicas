@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Préstamos Sierras Chicas - Empeños y Créditos Personales</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --rojo: #8b0000;
+      --verde: #25D366;
+      --gris: #f8f9fb;
+      --texto: #333;
+      --sombra: 0 8px 25px rgba(0,0,0,0.05);
+      --radius: 14px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Roboto',sans-serif;background:var(--gris);color:var(--texto);line-height:1.6;}
+
+    header{
+      background:var(--rojo);color:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;
+      box-shadow:0 3px 8px rgba(0,0,0,0.1);position:fixed;top:0;width:100%;z-index:999;
+    }
+    header h1{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.5rem;}
+    .btn-header{background:#fff;color:var(--rojo);padding:8px 18px;border-radius:25px;font-weight:600;text-decoration:none;transition:.3s;}
+    .btn-header:hover{background:#f1f1f1;}
+
+    .hero{
+      background:linear-gradient(rgba(139,0,0,0.85),rgba(0,0,0,0.85)),url('https://images.unsplash.com/photo-1607082349566-1873423751c8?auto=format&fit=crop&w=1200&q=80');
+      background-size:cover;background-position:center;color:#fff;text-align:center;padding:140px 20px 100px;margin-top:70px;
+    }
+    .hero h2{font-size:2.8rem;font-family:'Montserrat',sans-serif;margin-bottom:0.7rem;}
+    .hero p{font-size:1.2rem;margin-bottom:2rem;}
+    .btn-principal{background:#fff;color:var(--rojo);padding:12px 30px;border-radius:30px;font-weight:700;cursor:pointer;border:none;transition:.3s;font-size:1rem;}
+    .btn-principal:hover{transform:translateY(-3px);background:#f5f5f5;}
+
+    .section{padding:90px 20px;max-width:1100px;margin:0 auto;text-align:center;}
+    .section h2{font-family:'Montserrat',sans-serif;font-size:2rem;margin-bottom:1rem;}
+
+    /* SIMULADOR */
+    .simulador-box{
+      background:#fff;border-radius:var(--radius);box-shadow:var(--sombra);padding:2rem;max-width:700px;margin:2rem auto;text-align:left;
+    }
+    .form-group{margin-bottom:1.2rem;}
+    label{font-weight:600;display:block;margin-bottom:.4rem;}
+    select{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;}
+    .btn-simular{background:var(--rojo);color:#fff;border:none;padding:12px 30px;border-radius:25px;font-weight:700;cursor:pointer;transition:.3s;width:100%;}
+    .btn-simular:hover{background:#a00000;}
+    .resultado{
+      display:none;margin-top:1.5rem;background:#f8f8f8;padding:1.5rem;border-radius:var(--radius);border:1px solid #eee;
+    }
+    .resultado h3{color:var(--verde);}
+    .btn-whatsapp{display:inline-block;margin-top:1rem;background:linear-gradient(45deg,var(--verde),#1ebe58);color:#fff;
+      padding:12px 25px;border-radius:25px;text-decoration:none;font-weight:700;transition:.3s;}
+    .btn-whatsapp:hover{transform:scale(1.05);}
+
+    .cta-form{text-align:center;margin-top:60px;}
+    .cta-form p{margin-bottom:1rem;}
+    .cta-form a{
+      display:inline-block;background:var(--rojo);color:#fff;padding:14px 40px;border-radius:30px;text-decoration:none;font-weight:600;
+      box-shadow:0 5px 15px rgba(139,0,0,0.3);transition:.3s;
+    }
+    .cta-form a:hover{background:#a00000;transform:translateY(-3px);}
+
+    .subsection{max-width:950px;margin:2rem auto;text-align:left;}
+    .subsection h3{color:var(--rojo);font-family:'Montserrat',sans-serif;margin:1.5rem 0 1rem;}
+    .subsection ul{margin-left:1.5rem;list-style:disc;line-height:1.8;}
+
+    /* FAQ y testimonios */
+    .faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:1.5rem;margin-top:1.5rem;}
+    .faq-item{background:#fff;padding:1.5rem;border-radius:var(--radius);box-shadow:var(--sombra);text-align:left;}
+    .faq-item strong{color:var(--rojo);display:block;margin-bottom:0.5rem;font-size:1.1rem;}
+
+    .testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem;}
+    .testimonial{background:#fff;padding:1.5rem;border-radius:var(--radius);box-shadow:var(--sombra);text-align:center;}
+    .testimonial img{width:70px;height:70px;border-radius:50%;margin-bottom:1rem;object-fit:cover;}
+    .testimonial p{font-style:italic;color:#555;margin-bottom:0.5rem;}
+    .testimonial h4{font-weight:700;color:var(--rojo);}
+
+    footer{background:var(--rojo);color:#fff;text-align:center;padding:2rem 1rem;margin-top:3rem;}
+    footer a{color:#fff;text-decoration:underline;}
+    .whatsapp-float{position:fixed;bottom:25px;right:25px;background:var(--verde);color:#fff;border-radius:50%;width:55px;height:55px;
+      display:flex;align-items:center;justify-content:center;font-size:1.8rem;text-decoration:none;box-shadow:var(--sombra);}
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Préstamos Sierras Chicas</h1>
+    <a href="https://forms.gle/wDDJWZf4FWZ2Q3ht5" class="btn-header" target="_blank">Formulario</a>
+  </header>
+
+  <section class="hero">
+    <h2>Tu préstamo rápido y seguro</h2>
+    <p>Con garantía de empeño o ingresos comprobables</p>
+    <button class="btn-principal" onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})">Simular préstamo</button>
+  </section>
+
+  <section id="simulador" class="section">
+    <h2>Simulá tu préstamo</h2>
+    <div class="simulador-box">
+      <div class="form-group">
+        <label>Tipo de cliente</label>
+        <select id="tipoCliente">
+          <option value="">Seleccionar...</option>
+          <option value="nuevo">Cliente nuevo (hasta $100.000)</option>
+          <option value="frecuente">Cliente frecuente (hasta $300.000)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Monto</label>
+        <select id="monto"><option value="">Seleccionar tipo de cliente...</option></select>
+      </div>
+      <div class="form-group">
+        <label>Frecuencia de pago</label>
+        <select id="frecuencia">
+          <option value="">Seleccionar...</option>
+          <option value="mensual">Mensual</option>
+          <option value="quincenal">Quincenal</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Cantidad de cuotas</label>
+        <select id="cuotas">
+          <option value="">Seleccionar...</option>
+          <option value="1">1 cuota</option>
+          <option value="2">2 cuotas</option>
+          <option value="3">3 cuotas</option>
+          <option value="4">4 cuotas</option>
+        </select>
+      </div>
+      <button class="btn-simular" onclick="calcularPrestamo()">Calcular</button>
+
+      <div class="resultado" id="resultado">
+        <h3>Tu préstamo simulado</h3>
+        <p id="textoResultado"></p>
+        <a id="whatsappBtn" target="_blank" class="btn-whatsapp">Enviar por WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="cta-form">
+      <p>¿Ya hablaste con un asesor o querés dejar tus datos para evaluación?</p>
+      <a href="https://forms.gle/wDDJWZf4FWZ2Q3ht5" target="_blank"><i class="fa-solid fa-clipboard-list"></i> Continuar solicitud online</a>
+    </div>
+  </section>
+
+  <section id="requisitos" class="section">
+    <h2>Requisitos para solicitar un préstamo</h2>
+    <div class="subsection">
+      <h3><i class="fa-solid fa-file-circle-check"></i> Documentación obligatoria</h3>
+      <ul>
+        <li>DNI argentino vigente (frente y dorso, legible).</li>
+        <li>Comprobante de domicilio actual (servicio o resumen bancario).</li>
+        <li>CBU o alias bancario a nombre del solicitante.</li>
+        <li>Celular con WhatsApp activo y correo electrónico válido.</li>
+      </ul>
+
+      <h3><i class="fa-solid fa-hand-holding-dollar"></i> Garantía por empeño</h3>
+      <ul>
+        <li>Podés entregar un objeto de valor (celular, notebook, herramienta, joya, consola, reloj, etc.).</li>
+        <li>Debe enviarse con al menos 4 fotos claras para la tasación.</li>
+        <li>El objeto se resguarda en condiciones seguras hasta la cancelación del préstamo.</li>
+      </ul>
+
+      <h3><i class="fa-solid fa-briefcase"></i> Ingresos comprobables</h3>
+      <ul>
+        <li>Recibo de sueldo, monotributo o comprobantes comerciales.</li>
+        <li>Validación en menos de 24 horas hábiles.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="faq" class="section">
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq-grid">
+      <div class="faq-item"><strong>¿Cómo solicito un préstamo?</strong><p>Simulá tu préstamo, contactanos por WhatsApp y completá el formulario. Evaluamos tu solicitud en menos de 24 horas hábiles.</p></div>
+      <div class="faq-item"><strong>¿Cuánto puedo solicitar?</strong><p>Clientes nuevos hasta $100.000 y clientes frecuentes hasta $300.000 (según disponibilidad).</p></div>
+      <div class="faq-item"><strong>¿Qué objetos puedo empeñar?</strong><p>Celulares, notebooks, herramientas, consolas, joyas, relojes u otros objetos de valor verificable.</p></div>
+      <div class="faq-item"><strong>¿Puedo hacerlo sin empeño?</strong><p>Sí, si tenés ingresos comprobables y buena conducta crediticia.</p></div>
+      <div class="faq-item"><strong>¿Dónde operan?</strong><p>Zona Sierras Chicas: Salsipuedes, Unquillo, Mendiolaza, Río Ceballos y Villa Allende.</p></div>
+      <div class="faq-item"><strong>¿Qué pasa si me atraso?</strong><p>El préstamo entra en mora y se aplican cargos según contrato. Siempre recomendamos mantener contacto para evitar inconvenientes.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Opiniones de nuestros clientes</h2>
+    <div class="testimonials">
+      <div class="testimonial"><img src="https://randomuser.me/api/portraits/women/45.jpg"/><p>“Excelente atención, todo rápido y transparente. Recomendados 100%.”</p><h4>- Laura G. (Río Ceballos)</h4></div>
+      <div class="testimonial"><img src="https://randomuser.me/api/portraits/men/32.jpg"/><p>“Simulé, me contactaron y el mismo día tuve la plata. Muy serios.”</p><h4>- Cristian P. (Unquillo)</h4></div>
+      <div class="testimonial"><img src="https://randomuser.me/api/portraits/women/56.jpg"/><p>“Muy buena experiencia, son claros y confiables.”</p><h4>- Valeria T. (Mendiolaza)</h4></div>
+      <div class="testimonial"><img src="https://randomuser.me/api/portraits/men/51.jpg"/><p>“Trato excelente, cumplieron todo lo acordado.”</p><h4>- José R. (Salsipuedes)</h4></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Préstamos Sierras Chicas - Atención en Córdoba, Sierras Chicas.</p>
+    <p><a href="mailto:nicolascena73@gmail.com">nicolascena73@gmail.com</a></p>
+  </footer>
+
+  <a href="https://wa.me/5493543658517" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+  <script>
+    const config = {
+      intereses: {
+        nuevo: { 1: 27, 2: 39, 3: 68, 4: 78 },
+        frecuente: { 1: 25, 2: 37, 3: 66, 4: 76 }
+      },
+      montos: {
+        nuevo: [50000, 75000, 100000],
+        frecuente: [100000, 150000, 200000, 250000, 300000]
+      }
+    };
+
+    document.getElementById('tipoCliente').addEventListener('change', function() {
+      const tipo = this.value;
+      const montoSelect = document.getElementById('monto');
+      montoSelect.innerHTML = '<option value="">Seleccionar...</option>';
+      if (tipo && config.montos[tipo]) {
+        config.montos[tipo].forEach(m => {
+          montoSelect.innerHTML += `<option value="${m}">$${m.toLocaleString()}</option>`;
+        });
+      }
+    });
+
+    function calcularPrestamo() {
+      const tipo = document.getElementById('tipoCliente').value;
+      const monto = parseInt(document.getElementById('monto').value);
+      const cuotas = parseInt(document.getElementById('cuotas').value);
+      const frecuencia = document.getElementById('frecuencia').value;
+      if (!tipo || !monto || !cuotas || !frecuencia) return alert('Completá todos los campos.');
+
+      const interes = config.intereses[tipo][cuotas] / 100;
+      const total = Math.round(monto * (1 + interes));
+      const cuota = Math.round(total / cuotas);
+
+      const texto = `Monto solicitado: $${monto.toLocaleString()} 
+      | Total a devolver: $${total.toLocaleString()} 
+      | ${cuotas} cuotas de $${cuota.toLocaleString()} (${frecuencia}).`;
+      document.getElementById('textoResultado').innerText = texto;
+      document.getElementById('resultado').style.display = 'block';
+
+      const mensaje = encodeURIComponent(`Solicitud de préstamo:\nTipo: ${tipo}\nMonto: $${monto}\nCuotas: ${cuotas}\nFrecuencia: ${frecuencia}\nTotal: $${total}`);
+      document.getElementById('whatsappBtn').href = `https://wa.me/5493543658517?text=${mensaje}`;
+
+      console.log("Enviado a correo: nicolascena73@gmail.com -> ", texto);
+    }
+  </script>
+</body>
+</html>

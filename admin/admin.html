@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Administración - Préstamos Sierras Chicas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rojo: #8b0000;
+      --gris: #f8f9fb;
+      --oro: #ffd700;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--gris);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      width: 95%;
+      max-width: 700px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      color: var(--rojo);
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 1rem;
+    }
+    label { font-weight: 500; display: block; margin-top: 1rem; }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 5px;
+    }
+    button {
+      background: var(--rojo);
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background: #a00000; }
+    .login {
+      text-align: center;
+    }
+    .login input { margin-top: 10px; }
+    .logout-btn {
+      background: #444;
+      color: #fff;
+      margin-top: 10px;
+    }
+    .alert {
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .alert.success { background: #d4edda; color: #155724; }
+    .alert.error { background: #f8d7da; color: #721c24; }
+  </style>
+</head>
+<body>
+  <div class="container" id="loginBox">
+    <h1>Acceso Administrador</h1>
+    <div class="login">
+      <label>Usuario</label>
+      <input id="user" type="text" placeholder="Usuario" />
+      <label>Contraseña</label>
+      <input id="pass" type="password" placeholder="Contraseña" />
+      <button onclick="login()">Ingresar</button>
+      <div id="loginMsg"></div>
+    </div>
+  </div>
+
+  <div class="container" id="panel" style="display:none;">
+    <h1>Configuración General</h1>
+
+    <label>Nombre de la Empresa</label>
+    <input id="empresa" type="text">
+
+    <label>WhatsApp</label>
+    <input id="whatsapp" type="text">
+
+    <label>Correo Electrónico</label>
+    <input id="email" type="email">
+
+    <label>Color Primario</label>
+    <input id="colorPrimario" type="color">
+
+    <label>Color Secundario</label>
+    <input id="colorSecundario" type="color">
+
+    <label>Intereses (Clientes Nuevos)</label>
+    <textarea id="interesesNuevo" rows="2"></textarea>
+
+    <label>Intereses (Clientes Frecuentes)</label>
+    <textarea id="interesesFrecuente" rows="2"></textarea>
+
+    <label>Montos (Clientes Nuevos)</label>
+    <input id="montosNuevo" placeholder="Ej: 50000,75000,100000">
+
+    <label>Montos (Clientes Frecuentes)</label>
+    <input id="montosFrecuente" placeholder="Ej: 100000,150000,200000,300000">
+
+    <button onclick="guardar()">Guardar Cambios</button>
+    <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+    <div id="alertBox"></div>
+  </div>
+
+  <script>
+    async function login() {
+      const user = document.getElementById("user").value;
+      const pass = document.getElementById("pass").value;
+
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user, pass }),
+      });
+
+      const msg = document.getElementById("loginMsg");
+      if (res.ok) {
+        msg.innerHTML = '<div class="alert success">Acceso concedido</div>';
+        setTimeout(() => {
+          document.getElementById("loginBox").style.display = "none";
+          document.getElementById("panel").style.display = "block";
+          cargarConfig();
+        }, 500);
+      } else {
+        msg.innerHTML = '<div class="alert error">Credenciales inválidas</div>';
+      }
+    }
+
+    async function cargarConfig() {
+      const res = await fetch("/api/config");
+      const c = await res.json();
+      document.getElementById("empresa").value = c.empresa;
+      document.getElementById("whatsapp").value = c.whatsapp;
+      document.getElementById("email").value = c.email;
+      document.getElementById("colorPrimario").value = c.colorPrimario;
+      document.getElementById("colorSecundario").value = c.colorSecundario;
+      document.getElementById("interesesNuevo").value = JSON.stringify(c.intereses.nuevo);
+      document.getElementById("interesesFrecuente").value = JSON.stringify(c.intereses.frecuente);
+      document.getElementById("montosNuevo").value = c.montos.nuevo.join(",");
+      document.getElementById("montosFrecuente").value = c.montos.frecuente.join(",");
+    }
+
+    async function guardar() {
+      const data = {
+        empresa: document.getElementById("empresa").value,
+        whatsapp: document.getElementById("whatsapp").value,
+        email: document.getElementById("email").value,
+        colorPrimario: document.getElementById("colorPrimario").value,
+        colorSecundario: document.getElementById("colorSecundario").value,
+        intereses: {
+          nuevo: JSON.parse(document.getElementById("interesesNuevo").value || "{}"),
+          frecuente: JSON.parse(document.getElementById("interesesFrecuente").value || "{}")
+        },
+        montos: {
+          nuevo: document.getElementById("montosNuevo").value.split(",").map(v=>parseInt(v.trim())),
+          frecuente: document.getElementById("montosFrecuente").value.split(",").map(v=>parseInt(v.trim()))
+        }
+      };
+
+      const res = await fetch("/api/config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const alertBox = document.getElementById("alertBox");
+      if (res.ok) {
+        alertBox.innerHTML = '<div class="alert success">Cambios guardados correctamente ✅</div>';
+      } else {
+        alertBox.innerHTML = '<div class="alert error">Error al guardar ⚠️</div>';
+      }
+    }
+
+    function logout() {
+      document.getElementById("panel").style.display = "none";
+      document.getElementById("loginBox").style.display = "block";
+    }
+  </script>
+</body>
+</html>

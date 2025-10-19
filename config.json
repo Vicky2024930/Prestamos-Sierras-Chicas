@@ -1,0 +1,19 @@
+{
+  "empresa": "Prestamos Sierras",
+  "whatsapp": "",
+  "email": "",
+  "colorPrimario": "#000000",
+  "colorSecundario": "#000000",
+  "intereses": {
+    "nuevo": {},
+    "frecuente": {}
+  },
+  "montos": {
+    "nuevo": [
+      null
+    ],
+    "frecuente": [
+      null
+    ]
+  }
+}
