@@ -225,48 +225,48 @@
       }
     });
 
-    function calcularPrestamo() {
-      const tipo = document.getElementById('tipoCliente').value;
-      const monto = parseInt(document.getElementById('monto').value);
-      const cuotas = parseInt(document.getElementById('cuotas').value);
-      const frecuencia = document.getElementById('frecuencia').value;
-      if (!tipo || !monto || !cuotas || !frecuencia) return alert('Completá todos los campos.');
+function calcularPrestamo() {
+  const tipo = document.getElementById('tipoCliente').value;
+  const monto = parseInt(document.getElementById('monto').value);
+  const cuotas = parseInt(document.getElementById('cuotas').value);
+  const frecuencia = document.getElementById('frecuencia').value;
+  if (!tipo || !monto || !cuotas || !frecuencia) return alert('Completá todos los campos.');
 
-      const interes = config.intereses[tipo][cuotas] / 100;
-      const total = Math.round(monto * (1 + interes));
-      const cuota = Math.round(total / cuotas);
+  const interes = config.intereses[tipo][cuotas] / 100;
+  const total = Math.round(monto * (1 + interes));
+  const cuota = Math.round(total / cuotas);
 
-      const texto = `Monto solicitado: $${monto.toLocaleString()} 
-      | Total a devolver: $${total.toLocaleString()} 
-      | ${cuotas} cuotas de $${cuota.toLocaleString()} (${frecuencia}).`;
-      document.getElementById('textoResultado').innerText = texto;
-      document.getElementById('resultado').style.display = 'block';
+  const texto = `Monto solicitado: $${monto.toLocaleString()} 
+  | Total a devolver: $${total.toLocaleString()} 
+  | ${cuotas} cuotas de $${cuota.toLocaleString()} (${frecuencia}).`;
+  document.getElementById('textoResultado').innerText = texto;
+  document.getElementById('resultado').style.display = 'block';
 
-      const mensaje = encodeURIComponent(`Solicitud de préstamo:\nTipo: ${tipo}\nMonto: $${monto}\nCuotas: ${cuotas}\nFrecuencia: ${frecuencia}\nTotal: $${total}`);
-      document.getElementById('whatsappBtn').href = `https://wa.me/5493543658517?text=${mensaje}`;
+  const mensaje = encodeURIComponent(`Solicitud de préstamo:\nTipo: ${tipo}\nMonto: $${monto}\nCuotas: ${cuotas}\nFrecuencia: ${frecuencia}\nTotal: $${total}`);
+  document.getElementById('whatsappBtn').href = `https://wa.me/5493543658517?text=${mensaje}`;
 
-      // Enviar correo al servidor
-fetch("/enviarCorreo", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    nombre: "Cliente Web",
-    tipoCliente: tipo,
-    monto,
-    cuotas,
-    frecuencia
+  // 🔥 Enviar correo real al backend
+  fetch("/enviarCorreo", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      nombre: "Cliente Web",
+      tipoCliente: tipo,
+      monto,
+      cuotas,
+      frecuencia
+    })
   })
-})
-  .then(res => {
-    if (res.ok) {
-      console.log("📨 Correo enviado correctamente al servidor");
-    } else {
-      console.error("⚠️ Error al enviar correo (respuesta no OK)");
-    }
-  })
-  .catch(err => console.error("❌ Error al conectar con servidor:", err));
- 
-    }
+    .then(res => {
+      if (res.ok) {
+        console.log("📨 Correo enviado correctamente al servidor");
+      } else {
+        console.error("⚠️ Error al enviar correo (respuesta no OK)");
+      }
+    })
+    .catch(err => console.error("❌ Error al conectar con servidor:", err));
+}
+
   </script>
 </body>
 </html>
