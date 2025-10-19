@@ -245,7 +245,27 @@
       const mensaje = encodeURIComponent(`Solicitud de préstamo:\nTipo: ${tipo}\nMonto: $${monto}\nCuotas: ${cuotas}\nFrecuencia: ${frecuencia}\nTotal: $${total}`);
       document.getElementById('whatsappBtn').href = `https://wa.me/5493543658517?text=${mensaje}`;
 
-      console.log("Enviado a correo: nicolascena73@gmail.com -> ", texto);
+      // Enviar correo al servidor
+fetch("/enviarCorreo", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    nombre: "Cliente Web",
+    tipoCliente: tipo,
+    monto,
+    cuotas,
+    frecuencia
+  })
+})
+  .then(res => {
+    if (res.ok) {
+      console.log("📨 Correo enviado correctamente al servidor");
+    } else {
+      console.error("⚠️ Error al enviar correo (respuesta no OK)");
+    }
+  })
+  .catch(err => console.error("❌ Error al conectar con servidor:", err));
+ 
     }
   </script>
 </body>
